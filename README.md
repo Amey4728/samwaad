@@ -2,7 +2,7 @@
 
 Two people who don't share a single language, having a real argument: interrupting, getting heated, changing their minds.
 
-**Live:** <your link> · Open it, pick your language, send the link (or QR) to the other person.
+**Live:** https://samvaad-i85f.onrender.com · Open it, pick your language, send the link (or QR) to the other person.
 
 ## Why an argument is different from a conversation
 
