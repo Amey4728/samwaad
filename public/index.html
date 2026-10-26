@@ -5,41 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Samvaad · argue in any language</title>
   <meta name="description" content="Two people, no shared language, one real argument. Live, interruptible, two-way translation.">
-  <meta name="theme-color" content="#FAFAF8">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <meta name="theme-color" content="#F4F3F0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121113" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%233E2556'/><path d='M7 10h11a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3h-6l-4 3v-3H7z' fill='%23EA6B35'/><path d='M14 15h11v8h-1v3l-4-3h-6z' fill='%23D6F550'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-mark" viewBox="0 0 32 32"><path d="M4 7h15a4 4 0 0 1 4 4v4a4 4 0 0 1-4 4h-8l-5 4v-4H4z" fill="var(--heat)"/><path d="M12 14h14a2 2 0 0 1 2 2v7h-2v4l-5-4h-9z" fill="currentColor"/></symbol>
+    <symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2.5-6.5z" fill="currentColor"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
   <main id="home" class="view">
-    <div class="brand">SAMVAAD</div>
-    <h1 data-i18n="tagline">Argue with anyone. Even if you share no language.</h1>
-    <p id="invite" class="invite hidden" data-i18n="invited">Someone invited you to talk.</p>
-    <label>
-      <span data-i18n="yourLanguage">Your language</span>
-      <select id="lang"></select>
-    </label>
-    <label>
-      <span data-i18n="yourName">Your name</span>
-      <input id="name" maxlength="24" autocomplete="given-name">
-    </label>
-    <button id="go" class="primary" data-i18n="start">Start</button>
-    <p class="fine" data-i18n="howto">Talk normally. Interrupt. Get loud. Change your mind. It keeps up.</p>
-    <p class="fine" data-i18n="browserNote">Works best in Chrome. Allow the microphone.</p>
+    <div class="brand"><svg class="mark"><use href="#i-mark"/></svg><span>Samvaad</span></div>
+
+    <section class="hero">
+      <p id="invite" class="invite hidden"><span class="pulse"></span><span data-i18n="invited">Someone invited you to talk.</span></p>
+      <h1 data-i18n="tagline">Argue with anyone. Even if you share no language.</h1>
+      <p class="lede" data-i18n="howto">Talk normally. Interrupt. Get loud. Change your mind. It keeps up.</p>
+    </section>
+
+    <section class="form">
+      <div class="field">
+        <span class="label" id="langLabel" data-i18n="yourLanguage">Your language</span>
+        <div id="langGrid" class="langgrid" role="radiogroup" aria-labelledby="langLabel"></div>
+        <select id="lang" class="hidden" aria-hidden="true" tabindex="-1"></select>
+      </div>
+      <label class="field">
+        <span class="label" data-i18n="yourName">Your name</span>
+        <input id="name" maxlength="24" autocomplete="given-name">
+      </label>
+      <button id="go" class="primary" data-i18n="start">Start</button>
+      <p class="fine" data-i18n="browserNote">Works best in Chrome. Allow the microphone.</p>
+    </section>
   </main>
 
   <main id="room" class="view hidden">
     <header class="bar">
+      <svg class="mark sm" aria-hidden="true"><use href="#i-mark"/></svg>
       <div id="peers" class="peers"></div>
-      <span id="clash" class="chip" data-i18n="overlap">Both talking</span>
-      <button id="voice" class="chip"></button>
+      <span id="clash" class="clashchip" data-i18n="overlap">Both talking</span>
+      <button id="voice" class="iconbtn" type="button"><svg><use href="#i-vol"/></svg><span class="vl"></span></button>
     </header>
 
     <section id="share" class="share hidden">
-      <p data-i18n="waiting">Waiting for the other person. Send them this:</p>
-      <img id="qr" alt="QR code" width="180" height="180">
+      <div class="sharetext">
+        <span class="waitdot"></span>
+        <p data-i18n="waiting">Waiting for the other person. Send them this:</p>
+      </div>
+      <div class="qrframe"><img id="qr" alt="QR code" width="180" height="180"></div>
+      <div id="roomCode" class="roomcode"></div>
       <div class="sharerow">
-        <input id="link" readonly>
-        <button id="copy" class="chip" data-i18n="copy">Share link</button>
+        <input id="link" readonly aria-label="Room link">
+        <button id="copy" class="secondary" type="button" data-i18n="copy">Share link</button>
       </div>
       <p class="fine" data-i18n="headphones"></p>
     </section>
@@ -47,8 +72,13 @@
     <section id="feed" class="feed" aria-live="polite"></section>
 
     <footer class="dock">
-      <button id="mic" class="mic" aria-pressed="false"><span class="dot"></span><span id="micLabel"></span></button>
-      <form id="typeForm"><input id="typeBox" dir="auto" autocomplete="off" enterkeyhint="send"></form>
+      <button id="mic" class="mic" type="button" aria-pressed="false">
+        <span class="dot"><svg><use href="#i-mic"/></svg></span><span id="micLabel"></span>
+      </button>
+      <form id="typeForm">
+        <input id="typeBox" dir="auto" autocomplete="off" enterkeyhint="send">
+        <button class="send" type="submit" aria-label="Send"><svg><use href="#i-send"/></svg></button>
+      </form>
     </footer>
   </main>
 

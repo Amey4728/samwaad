@@ -141,7 +141,8 @@ class Bubble {
       this.sub.textContent = m.translation === m.text ? '' : m.text;
       this.setHeat(m);
       if (m.failed) this.flag(t('failed'), 'warn');
-      const replay = el('button', 'act', '🔊');
+      const replay = el('button', 'act');
+      replay.innerHTML = '<svg><use href="#i-vol"/></svg>';
       replay.setAttribute('aria-label', 'Play again');
       replay.onclick = () => speak({ text: m.translation, intensity: m.intensity }, true);
       const huh = el('button', 'act', t('huh'));
@@ -201,6 +202,7 @@ function renderPeers() {
 function setupShare() {
   const link = `${location.origin}/?r=${S.room}`;
   $('#link').value = link;
+  $('#roomCode').textContent = S.room;
   $('#qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=8&data=${encodeURIComponent(link)}`;
   $('#copy').onclick = async () => {
     if (navigator.share) {
@@ -475,10 +477,17 @@ function renderMic() {
   const b = $('#mic');
   b.classList.toggle('on', recWanted);
   b.setAttribute('aria-pressed', String(recWanted));
-  $('#micLabel').textContent = !SR ? t('noMic') : recWanted ? t('listening') : t('micOff');
+  const label = !SR ? t('noMic') : recWanted ? t('listening') : t('micOff');
+  $('#micLabel').textContent = label;
+  b.setAttribute('aria-label', label);
 }
 function renderVoice() {
-  $('#voice').textContent = S.voiceOn ? `🔊 ${t('voiceOn')}` : `🔇 ${t('voiceOff')}`;
+  const b = $('#voice');
+  const label = S.voiceOn ? t('voiceOn') : t('voiceOff');
+  b.classList.toggle('off', !S.voiceOn);
+  b.querySelector('use').setAttribute('href', S.voiceOn ? '#i-vol' : '#i-mute');
+  b.querySelector('.vl').textContent = label;
+  b.setAttribute('aria-label', label);
 }
 function toggleVoice() {
   S.voiceOn = !S.voiceOn;
@@ -518,12 +527,31 @@ function initHome() {
   }
   sel.value = langByCode(S.lang) ? S.lang : 'en-IN';
   S.lang = sel.value;
+  const grid = $('#langGrid');
+  const tiles = LANGS.map((l) => {
+    const b = el('button', 'lg');
+    b.type = 'button';
+    b.setAttribute('role', 'radio');
+    b.lang = l.code;
+    b.append(el('span', 'n', l.native));
+    if (l.native !== l.name) b.append(el('span', 'e', l.name));
+    b.onclick = () => {
+      if (sel.value === l.code) return;
+      sel.value = l.code;
+      sel.dispatchEvent(new Event('change'));
+    };
+    grid.append(b);
+    return b;
+  });
+  const markLang = () => tiles.forEach((b) => b.setAttribute('aria-checked', String(b.lang === sel.value)));
+  markLang();
+  tiles.find((b) => b.lang === sel.value)?.scrollIntoView({ block: 'nearest' });
   $('#name').value = S.name;
   if (S.room) {
     $('#invite').classList.remove('hidden');
     $('#go').dataset.i18n = 'join';
   }
-  sel.addEventListener('change', () => { S.lang = sel.value; loadUi(); });
+  sel.addEventListener('change', () => { S.lang = sel.value; markLang(); loadUi(); });
   $('#go').addEventListener('click', start);
   loadUi();
 }
