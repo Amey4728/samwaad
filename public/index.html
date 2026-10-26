@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Samvaad · argue in any language</title>
+  <meta name="description" content="Two people, no shared language, one real argument. Live, interruptible, two-way translation.">
+  <meta name="theme-color" content="#FAFAF8">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main id="home" class="view">
+    <div class="brand">SAMVAAD</div>
+    <h1 data-i18n="tagline">Argue with anyone. Even if you share no language.</h1>
+    <p id="invite" class="invite hidden" data-i18n="invited">Someone invited you to talk.</p>
+    <label>
+      <span data-i18n="yourLanguage">Your language</span>
+      <select id="lang"></select>
+    </label>
+    <label>
+      <span data-i18n="yourName">Your name</span>
+      <input id="name" maxlength="24" autocomplete="given-name">
+    </label>
+    <button id="go" class="primary" data-i18n="start">Start</button>
+    <p class="fine" data-i18n="howto">Talk normally. Interrupt. Get loud. Change your mind. It keeps up.</p>
+    <p class="fine" data-i18n="browserNote">Works best in Chrome. Allow the microphone.</p>
+  </main>
+
+  <main id="room" class="view hidden">
+    <header class="bar">
+      <div id="peers" class="peers"></div>
+      <span id="clash" class="chip" data-i18n="overlap">Both talking</span>
+      <button id="voice" class="chip"></button>
+    </header>
+
+    <section id="share" class="share hidden">
+      <p data-i18n="waiting">Waiting for the other person. Send them this:</p>
+      <img id="qr" alt="QR code" width="180" height="180">
+      <div class="sharerow">
+        <input id="link" readonly>
+        <button id="copy" class="chip" data-i18n="copy">Share link</button>
+      </div>
+      <p class="fine" data-i18n="headphones"></p>
+    </section>
+
+    <section id="feed" class="feed" aria-live="polite"></section>
+
+    <footer class="dock">
+      <button id="mic" class="mic" aria-pressed="false"><span class="dot"></span><span id="micLabel"></span></button>
+      <form id="typeForm"><input id="typeBox" dir="auto" autocomplete="off" enterkeyhint="send"></form>
+    </footer>
+  </main>
+
+  <div id="status" class="status hidden" role="status"></div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
